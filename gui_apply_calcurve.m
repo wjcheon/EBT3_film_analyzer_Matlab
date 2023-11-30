@@ -57,6 +57,10 @@ handles.output = hObject;
 
 % Initialise tabs
 handles.tabManager = TabManager( hObject );
+<<<<<<< HEAD
+=======
+set(hObject, 'Name', 'EbtFilmAnalyzer_1.3 --- Developer: Wonjoong Cheon (wjcheon@catholic.ac.kr)');
+>>>>>>> ebt_1.3
 
 % Update handles structure
 guidata(hObject, handles);
@@ -213,6 +217,7 @@ function pb_load_calibration_curve_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 a=0;
+<<<<<<< HEAD
 [filename, pathname] = uigetfile({'*.mat'},' Select calibratoin curve ')
 calibration_result = load(fullfile(pathname, filename))
 calibration_raw_data = calibration_result.final_calibration_data;
@@ -225,6 +230,48 @@ ylim([0, max(calibration_raw_data(:,1))])
 grid on
 xlabel('Optical density')
 ylabel('Dose [cGy]')
+=======
+
+[filename, pathname] = uigetfile({'*.mat'},' Select calibratoin curve ')
+calibration_result = load(fullfile(pathname, filename))   % 231129
+% calibration_result = open(fullfile(pathname, filename))  % not working on
+% deployed application
+calibration_raw_data = calibration_result.final_calibration_data;
+calibration_fit_result = calibration_result.fitresult;
+
+
+% Set up fittype and options.
+ft = fittype( 'poly3' );
+
+% % Fit model to data.    231129 for new fit
+% old_table_OD_mean = calibration_raw_data(:,2);
+% old_table_cGy = calibration_raw_data(:,1);
+% [xData, yData] = prepareCurveData( old_table_OD_mean, old_table_cGy );
+% [fitresult, gof] = fit( xData, yData, ft );
+% % Plot fit with data.
+% calibration_fit_result = fitresult;
+coeff_calib = coeffvalues(calibration_fit_result);
+c = cfit(ft,coeff_calib(1),coeff_calib(2), coeff_calib(3), coeff_calib(4))
+% c = fitresult;
+%
+cla(handles.axes_calibratioin_curve)
+axes(handles.axes_calibratioin_curve), grid on
+
+%hold on  % not working deployed application
+
+hold(handles.axes_calibratioin_curve,'on');
+h2 = plot(handles.axes_calibratioin_curve, calibration_raw_data(:,2), calibration_raw_data(:,1), 'b--.')
+axes(handles.axes_calibratioin_curve), h1 = plot(c),   % can not use for standard alone
+
+legend([h1, h2], {'fitted curve', 'measured data'})
+% legend([h2], {'measured data'})
+xlim([0, max(calibration_raw_data(:,2))])
+ylim([0, max(calibration_raw_data(:,1))])
+xlabel('Optical density')
+ylabel('Dose [cGy]')
+hold(handles.axes_calibratioin_curve,'off');
+
+>>>>>>> ebt_1.3
 %
 coeff_calib = coeffvalues(calibration_fit_result);
 handles.p1 = coeff_calib(1);
@@ -233,6 +280,10 @@ handles.p3 = coeff_calib(3);
 handles.p4 = coeff_calib(4);
 handles.formula = formula(calibration_fit_result);
 handles.fitresult = calibration_fit_result;
+<<<<<<< HEAD
+=======
+% axes(handles.axes_calibratioin_curve), hold off
+>>>>>>> ebt_1.3
 guidata(hObject, handles);
 
 % --- Executes on button press in pb_save_calbration_curve.
@@ -561,12 +612,33 @@ addNewPositionCallback(h,@(p) title([num2str(target_dosemap(round(p(2)),round(p(
 % addNewPositionCallback(h,@(p) disp(round(p(1))))
 % addNewPositionCallback(h,@(p) eval('current_pos = p'))
 %
+<<<<<<< HEAD
 % horizontal line
 addNewPositionCallback(h,@(p) eval('axes(handles.axes_tab_plot_horizontal), plot(target_dosemap(round(p(2)),:), horizontal_plot_op), grid on'))
 % vertical line
 addNewPositionCallback(h,@(p) eval('axes(handles.axes_tab_plot_vertical), plot(target_dosemap(:,round(p(1))), vertical_plot_op), grid on'))
 
 
+=======
+% % horizontal line
+% addNewPositionCallback(h,@(p) eval('axes(handles.axes_tab_plot_horizontal), plot(target_dosemap(round(p(2)),:), horizontal_plot_op), grid on'))
+% % vertical line
+% addNewPositionCallback(h,@(p) eval('axes(handles.axes_tab_plot_vertical), plot(target_dosemap(:,round(p(1))), vertical_plot_op), grid on'))
+
+% horizontal 
+addNewPositionCallback(h,@(p) yourCallbackFunction_drawProfile(p, target_dosemap, handles));
+
+
+function yourCallbackFunction_drawProfile(p, target_dosemap, handles)
+    % p�� ����Ͽ� �ʿ��� �۾� ����
+    % ��: �̹������� ���õ� ������ �ڸ���
+    vertical_plot_op = 'r--';
+    horizontal_plot_op = 'b--';
+    axes(handles.axes_tab_plot_horizontal), plot(target_dosemap(round(p(2)),:), horizontal_plot_op), grid on
+    axes(handles.axes_tab_plot_vertical), plot(target_dosemap(:,round(p(1))), vertical_plot_op), grid on
+    axes(handles.axes_DoseDistribution), title([num2str(target_dosemap(round(p(2)),round(p(1))),6), ' cGy']);
+    
+>>>>>>> ebt_1.3
 
 
 % addNewPositionCallback(h,@(p) eval('current_roi = imcrop(handles.Subtraction_img, p);'));

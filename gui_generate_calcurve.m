@@ -55,9 +55,19 @@ function gui_generate_calcurve_OpeningFcn(hObject, eventdata, handles, varargin)
 % Choose default command line output for gui_generate_calcurve
 handles.output = hObject;
 
+<<<<<<< HEAD
 % Update handles structure
 guidata(hObject, handles);
 
+=======
+set(hObject, 'Name', 'EbtFilmCalibrator_1.3 --- Developer: Wonjoong Cheon (wjcheon@catholic.ac.kr)');
+
+% Update handles structure
+guidata(hObject, handles);
+
+
+
+>>>>>>> ebt_1.3
 % UIWAIT makes gui_generate_calcurve wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
 
@@ -292,6 +302,7 @@ current_roi = [];
 colormap_set = 'jet'
 mean_val = [];
 std_val = [];
+<<<<<<< HEAD
 
 h = imrect(handles.axes_SubtractionImg,[10 10 100 100]);
 addNewPositionCallback(h,@(p) title(mat2str(p,3)));
@@ -310,6 +321,41 @@ handles.cGy_val = str2double(cGy_input);
 handles.instance_roibox = h;
 guidata(hObject, handles);
 
+=======
+Subtraction_img = handles.Subtraction_img;
+
+h = imrect(handles.axes_SubtractionImg,[10 10 100 100]);
+addNewPositionCallback(h,@(p) title(mat2str(p,3)));
+addNewPositionCallback(h, @(p) yourCallbackFunction(p, handles));
+% addNewPositionCallback(h,@(p) disp(p))
+% addNewPositionCallback(h,@(p) eval('handles.current_roi = imcrop(handles.Subtraction_img, p);'));
+% addNewPositionCallback(h,@(p) eval('mean_val = mean2(imcrop(handles.Subtraction_img, p));'));
+% addNewPositionCallback(h,@(p) eval('std_val = std2(imcrop(handles.Subtraction_img, p));'));
+% addNewPositionCallback(h,@(p) eval('axes(handles.axes_ZoomIn), imshow(handles.current_roi, []), colormap(colormap_set)'));
+% addNewPositionCallback(h,@(p) set(handles.edit_mean_val, 'string', mean2(imcrop(handles.Subtraction_img, p))))
+% addNewPositionCallback(h,@(p) set(handles.edit_std_val, 'string', std2(imcrop(handles.Subtraction_img, p))))
+% addNewPositionCallback(h,@(p) eval('handles.mean_val = mean2(imcrop(handles.Subtraction_img, p))'))
+% addNewPositionCallback(h,@(p) eval('handles.std_val = std2(imcrop(handles.Subtraction_img, p))'))
+% cGy_input = get(handles.edit_cGy_input, 'string');
+%
+% handles.cGy_val = str2double(cGy_input);
+handles.instance_roibox = h;
+guidata(hObject, handles);
+
+function yourCallbackFunction(p, handles)
+    % p�� ����Ͽ� �ʿ��� �۾� ����
+    % ��: �̹������� ���õ� ������ �ڸ���
+    croppedImage = imcrop(handles.Subtraction_img, p);
+
+    % ���� �����͸� GUI�� �ݿ�
+    % ��: ��հ� ǥ������ ǥ��
+    mean_val = mean2(croppedImage);
+    std_val = std2(croppedImage);
+    set(handles.edit_mean_val, 'String', num2str(mean_val));
+    set(handles.edit_std_val, 'String', num2str(std_val));
+    axes(handles.axes_ZoomIn), imshow(croppedImage, []), colormap(handles.axes_ZoomIn, 'jet')
+
+>>>>>>> ebt_1.3
 
 
 function edit_roibox_width_Callback(hObject, eventdata, handles)
